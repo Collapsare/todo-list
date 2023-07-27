@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="todoList">
     <TodoListItem
       v-for="item in todos"
       :key="item.id"
@@ -37,4 +37,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.todoList {
+  display: flex;
+  flex-direction: column;
+  gap:20px;
+}
+</style>

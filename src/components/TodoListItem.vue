@@ -1,13 +1,13 @@
 <template>
   <div class="todoItem">
     <input
-      type="checkbox"
-      id="checkbox"
       class="todoItemCheckbox"
+      type="checkbox"
+      :id="item.id"
       :value="item.value"
       @input="changeTodoFinished(item.id)"
     />
-    <label for="checkbox" class="todoItemText">{{ item.name }}</label>
+    <label class="todoItemText" :for="item.id">{{ item.name }}</label>
     <button class="deleteBtn" @click="deleteItem(item.id)"></button>
   </div>
 </template>
@@ -40,7 +40,7 @@ export default {
   opacity: 0;
 }
 .todoItemCheckbox + label {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   user-select: none;
 }
@@ -54,15 +54,22 @@ export default {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 70% 70%;
+  margin-right: 20px;
 }
 
 .todoItemCheckbox:checked + label::before {
   border-color: #7aba3a;
   background-color: #7aba3a;
-  background-image: url(../assets/Vector.svg);
+  background-image: url(../assets/checkbox-checked-icon.svg);
+}
+
+.todoItemCheckbox:checked + label {
+  text-decoration: line-through;
 }
 
 .todoItem {
+  display: flex;
+  justify-content: space-between;
   width: 750px;
   height: 80px;
   box-sizing: border-box;
@@ -73,5 +80,18 @@ export default {
 .todoItemText {
   font-size: 24px;
   font-family: Montserrat, sans-serif;
+}
+.deleteBtn {
+  width: 50px;
+  height: 50px;
+
+  border-radius: 5px;
+  border: none;
+
+  background-color: #f07070;
+  background-image: url(../assets/delete-btn-icon.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 50% 50%;
 }
 </style>

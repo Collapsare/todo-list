@@ -16,6 +16,7 @@ export default {
   methods: {
     addTodoItem() {
       this.$emit("addTodoItem", this.todoName);
+      this.todoName = "";
     },
     cancelSubmit(event) {
       event.preventDefault();
