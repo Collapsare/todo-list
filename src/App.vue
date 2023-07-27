@@ -1,23 +1,27 @@
 <template>
   <div id="app">
     <MyInput @addTodoItem="addTodoItem" />
+    <FilterBtn/>
     <TodoList
       :todos="todos"
       @changeFinished="changeTodoFinished"
       @itemDeleted="deleteItem"
     />
+
   </div>
 </template>
 
 <script>
 import MyInput from "./components/MyInput.vue";
 import TodoList from "./components/TodoList.vue";
+import FilterBtn from "./components/FilterBtn.vue";
 
 export default {
   name: "App",
   components: {
     MyInput,
     TodoList,
+    FilterBtn,
   },
   data: () => {
     return {

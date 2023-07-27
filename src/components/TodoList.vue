@@ -41,6 +41,6 @@ export default {
 .todoList {
   display: flex;
   flex-direction: column;
-  gap:20px;
+  gap: 20px;
 }
 </style>
