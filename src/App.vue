@@ -27,17 +27,29 @@ export default {
   methods: {
     addTodoItem(val) {
       this.todos.push({ id: this.todos.length, name: val, value: false });
+      this.saveAllData();
     },
     changeTodoFinished(id) {
-      console.log(id);
       const index = this.todos.findIndex((el) => el.id === id);
       this.todos[index].value = !this.todos[index].value;
+      this.saveAllData();
     },
     deleteItem(id) {
       const index = this.todos.findIndex((el) => el.id === id);
       this.todos.splice(index, 1);
+      this.saveAllData();
     },
+    saveAllData() {
+      localStorage.setItem('data', JSON.stringify(this.todos))
+    },
+    getData() {
+      return JSON.parse(localStorage.getItem('data'))
+    }
   },
+  created() {
+    const data = this.getData();
+    if (data) this.todos = data;
+  }
 };
 </script>
 
