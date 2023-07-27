@@ -4,7 +4,7 @@
       class="todoItemCheckbox"
       type="checkbox"
       :id="item.id"
-      :value="item.value"
+      :checked="item.value"
       @input="changeTodoFinished(item.id)"
     />
     <label class="todoItemText" :for="item.id">{{ item.name }}</label>
