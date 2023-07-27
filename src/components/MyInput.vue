@@ -38,7 +38,7 @@ export default {
   height: 70px;
   width: 422px;
   font-size: 24px;
-  padding: 0 10px;
+  padding: 0 74px 0 10px;
 }
 
 .input-btn {
