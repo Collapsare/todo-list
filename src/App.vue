@@ -1,28 +1,44 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <MyInput @addTodoItem="addTodoItem" />
+    <TodoList
+      :todos="todos"
+      @changeFinished="changeTodoFinished"
+      @itemDeleted="deleteItem"
+    />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import MyInput from "./components/MyInput.vue";
+import TodoList from "./components/TodoList.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    MyInput,
+    TodoList,
+  },
+  data: () => {
+    return {
+      todos: [],
+    };
+  },
+  methods: {
+    addTodoItem(val) {
+      this.todos.push({ id: this.todos.length, name: val, value: false });
+    },
+    changeTodoFinished(id) {
+      console.log(id);
+      const index = this.todos.findIndex((el) => el.id === id);
+      this.todos[index].value = !this.todos[index].value;
+    },
+    deleteItem(id) {
+      const index = this.todos.findIndex((el) => el.id === id);
+      this.todos.splice(index, 1);
+    },
+  },
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style></style>
