@@ -5,10 +5,10 @@
       type="checkbox"
       :id="item.id"
       :checked="item.value"
-      @input="changeTodoFinished(item.id)"
+      @input="changeTodoFinished(item)"
     />
     <label class="todoItemText" :for="item.id">{{ item.name }}</label>
-    <button class="deleteBtn" @click="deleteItem(item.id)"></button>
+    <button class="deleteBtn" @click="deleteItem(item)"></button>
   </div>
 </template>
 
@@ -76,6 +76,7 @@ export default {
   padding: 15px;
   background-color: #f9f9fa;
   border-radius: 4px;
+  
 }
 .todoItemText {
   font-size: 24px;

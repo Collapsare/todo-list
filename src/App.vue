@@ -1,13 +1,12 @@
 <template>
   <div id="app">
     <MyInput @addTodoItem="addTodoItem" />
-    <FilterBtn/>
+    <FilterBtn @filterChanged="filterTodos" />
     <TodoList
       :todos="todos"
       @changeFinished="changeTodoFinished"
       @itemDeleted="deleteItem"
     />
-
   </div>
 </template>
 
@@ -26,35 +25,81 @@ export default {
   data: () => {
     return {
       todos: [],
+      currentFilter: {},
     };
   },
   methods: {
     addTodoItem(val) {
-      this.todos.push({ id: this.todos.length, name: val, value: false });
-      this.saveAllData();
+      this.todos = this.backNewItem(val);
+      if (this.currentFilter) this.filterTodos(this.currentFilter);
     },
-    changeTodoFinished(id) {
-      const index = this.todos.findIndex((el) => el.id === id);
-      this.todos[index].value = !this.todos[index].value;
-      this.saveAllData();
+    changeTodoFinished(val) {
+      this.todos = this.backChangeItem(val);
+      if (this.currentFilter) this.filterTodos(this.currentFilter);
     },
-    deleteItem(id) {
-      const index = this.todos.findIndex((el) => el.id === id);
-      this.todos.splice(index, 1);
-      this.saveAllData();
+    deleteItem(val) {
+      this.todos = this.backRemoveItem(val);
+      if (this.currentFilter) this.filterTodos(this.currentFilter);
     },
-    saveAllData() {
-      localStorage.setItem('data', JSON.stringify(this.todos))
+    backNewItem(item) {
+      const data = this.getData();
+      localStorage.setItem(
+        "data",
+        JSON.stringify([{ id: data.length, name: item, value: false }, ...data])
+      );
+
+      return this.getData();
+    },
+    backRemoveItem(item) {
+      const data = this.getData();
+      const index = data.findIndex((el) => el.id === item.id);
+
+      if (index !== -1) {
+        data.splice(index, 1);
+        localStorage.setItem("data", JSON.stringify(data));
+      }
+
+      return this.getData();
+    },
+    backChangeItem(item) {
+      const data = this.getData();
+      const index = data.findIndex((el) => el.id === item.id);
+
+      if (index !== -1) {
+        data[index].value = !data[index].value;
+        localStorage.setItem("data", JSON.stringify(data));
+      }
+
+      return this.getData();
     },
     getData() {
-      return JSON.parse(localStorage.getItem('data'))
-    }
+      return JSON.parse(localStorage.getItem("data")) || [];
+    },
+    filterTodos(val) {
+      this.currentFilter = val;
+      this.todos = this.getData().filter(
+        (el) => val.value === undefined || el.value === val.value
+      );
+    },
   },
+
   created() {
     const data = this.getData();
-    if (data) this.todos = data;
-  }
+
+    if (data) {
+      this.todos = data;
+    }
+  },
 };
 </script>
 
-<style></style>
+<style>
+#app {
+  width: 800px;
+  margin: 0 auto;
+  margin-top: 100px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+</style>

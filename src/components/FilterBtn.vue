@@ -2,19 +2,26 @@
   <div class="filterContainer">
     <div @click="openFilterMenu" class="filterBtn">
       <div class="filterBtnText">{{ currentFilter.label }}</div>
-      <img class="filterBtnImg" src="../assets/select-icon.svg" />
+      <img
+        class="filterBtnImg"
+        src="../assets/select-icon.svg"
+        :class="{ animated: isVisible }"
+      />
     </div>
-
-    <ul class="filterList" v-if="isVisible">
-      <li
-        @click="changeCurrentFilter(option.id)"
-        class="filterListItem"
-        v-for="option in filterOptions"
-        :key="option.id"
-      >
-        {{ option.label }}
-      </li>
-    </ul>
+    <div class="filterListWrapper">
+      <transition name="fade">
+        <ul class="filterList" v-if="isVisible">
+          <li
+            @click="changeCurrentFilter(option.id)"
+            class="filterListItem"
+            v-for="option in filterOptions"
+            :key="option.id"
+          >
+            {{ option.label }}
+          </li>
+        </ul>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -27,8 +34,8 @@ export default {
       currentFilter: { id: 1, label: "Все" },
       filterOptions: [
         { id: 1, label: "Все" },
-        { id: 2, label: "Выполненные" },
-        { id: 3, label: "Невыполненные" },
+        { id: 2, label: "Выполненные", value: true },
+        { id: 3, label: "Невыполненные", value: false},
       ],
     };
   },
@@ -38,6 +45,7 @@ export default {
     },
     changeCurrentFilter(id) {
       this.currentFilter = this.filterOptions.find((el) => el.id === id);
+      this.$emit("filterChanged",this.currentFilter)
       this.openFilterMenu();
     },
   },
@@ -46,9 +54,10 @@ export default {
 
 <style scoped>
 .filterContainer {
-  width: 270px;
   user-select: none;
   position: relative;
+  cursor: pointer;
+  margin-left: 38px;
 }
 
 .filterBtn {
@@ -63,6 +72,11 @@ export default {
   background-color: #7aba3a;
   border-radius: 8px;
   padding: 0px 20px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.filterListWrapper {
+  position: absolute;
 }
 
 .filterBtnText,
@@ -71,6 +85,7 @@ export default {
   font-family: Montseratt, sans-serif;
   font-weight: 500;
   font-size: 24px;
+  width: 220px;
 }
 
 ul,
@@ -79,6 +94,10 @@ li {
   padding: 0;
 }
 
+.filterBtn:hover {
+  background-color: #60922d;
+  transition: background-color 0.2s ease-in-out;
+}
 .filterList {
   position: relative;
   background-color: #99c968;
@@ -95,14 +114,17 @@ li {
   cursor: pointer;
   padding: 20px 25px;
   user-select: none;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .filterList > li:hover {
   background-color: #60922d;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .filterList > li:active {
   background-color: #62bc38;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .filterList > li:first-child {
@@ -112,5 +134,28 @@ li {
 .filterList > li:last-child {
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
+}
+
+.animated {
+  transform: rotate(180deg);
+  transition: transform 0.2s ease-in-out;
+}
+
+.filterBtnImg {
+  transition: transform 0.2s ease-in-out;
+}
+.fade-enter-active {
+  animation: fade 0.2s;
+}
+.fade-leave-active {
+  animation: fade 0.2s reverse;
+}
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 </style>

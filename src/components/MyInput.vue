@@ -62,5 +62,11 @@ export default {
   right: 16px;
   cursor: pointer;
   border: none;
+  
+  transition: background-color 0.2s ease-in-out;
+}
+.input-btn:hover {
+  background-color: #60922d;
+  transition: background-color 0.2s ease-in-out;
 }
 </style>
